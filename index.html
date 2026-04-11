@@ -4,21 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <link rel="icon" href="logo.png"> -->
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter', Arial, sans-serif;
+}
 body{background:#0f0f0f;color:#fff}
 
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 16px;
   background:#000;
   position:sticky;
   top:0;
-  z-index:1000
+  z-index:1000;
+  border-bottom:1px solid #222;
+  background:rgba(0,0,0,0.9);
+  backdrop-filter: blur(6px);
+}
+
+/* THIS is the key */
+.header-inner{
+  max-width:1500px;       /* controls width */
+  margin:0 auto;          /* centers everything */
+  padding:14px 0px;      /* breathing space */
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* BRAND */
+.brand-title{
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:0.3px;
+}
+
+/* ABOUT BUTTON */
+.about-btn{
+  font-size:13px;
+  padding:6px 16px;
+  border-radius:20px;
+  background:#1c1c1c;
+  color:#ccc;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.about-btn:hover{
+  background:#e63946;
+  color:#fff;
 }
 
 .search{padding:10px 15px}
@@ -81,6 +119,17 @@ body{background:#0f0f0f;color:#fff}
   .grid{padding:0 16px}
   .section{padding:20px 16px}
 }
+.two-img{
+  display:flex;
+  gap:16px;
+}
+
+.two-img img{
+  width:50%;
+  height:300px;
+  object-fit:cover;
+  border-radius:10px;
+}
 
 /* SHEET PAGE OVERLAY */
 .sheet-page{
@@ -138,12 +187,20 @@ body{background:#0f0f0f;color:#fff}
 
 <!-- HEADER -->
 <div class="header">
-  <br></br>
-  <div></div>
-  <div>Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</div>
-  <div></div>
-  <br></br>
+  <div class="header-inner">
+
+    <!-- LEFT: BRAND -->
+    <div class="brand">
+      <div class="brand-title">Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</div>
+    </div>
+
+    <!-- RIGHT: ABOUT -->
+    <div class="about-btn" onclick="openAbout()">About Us</div>
+
+  </div>
 </div>
+
+</div>  
 
 <!-- SEARCH -->
 <!-- <div class="search">
@@ -160,18 +217,8 @@ body{background:#0f0f0f;color:#fff}
 
 <!-- EVENTS SECTION -->
 <div class="section">
-  <h2>Events</h2>
+  <h2 style ="padding: 0px 100px;">Events</h2>
   <div class="grid">
-
-    <div class="card" onclick="openSheet('cnblue')">
-      <img src="https://my.bookmyshow.com/api/v2/assets/image?image=https%3A%2F%2Fcdn-sea.bookmyshow.com%2Fprod%2Fimages%2F202602%2F9b666101-60ff-4381-bcce-b24c79474918%2Fog%2F1280x500%2FResized_Banner.png&q=80&t=webp&w=2560">
-      <div class="card-content">
-        <div class="title2">CNBLUE</div>
-        <div class="title3">2026 CNBLUE LIVE WORLD TOUR '3LOGY' IN KUALA LUMPUR</div>
-        <div class="info">📅 11 April 2026</div>
-        <div class="info">📍 Mega Star Arena, Sungei Wang Plaza</div>
-      </div>
-    </div>
 
     <div class="card" onclick="openSheet('sammy')">
       <img src="https://media.karousell.com/media/photos/products/2026/1/15/you__mi_sammi_cheng_live_in_ku_1768460435_3de56907_progressive">
@@ -334,7 +381,7 @@ body{background:#0f0f0f;color:#fff}
     </div>
 
     <div class="card" onclick="openSheet('post')">
-      <img src="https://thesun.my/wp-content/uploads/2026/04/POST-MALONE-KL-TOUR-POSTER.webp">
+      <img src="https://www.businesstoday.com.my/wp-content/uploads/2026/04/Post-Malone-KL-Concert.jpg">
       <div class="card-content">
         <div class="title2">Post Malone</div>
         <div class="title3">Post Malone Presents The BIG Stadium World Tour</div>
@@ -375,10 +422,12 @@ body{background:#0f0f0f;color:#fff}
         <span style="font-weight:bold;font-size:15px">Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</span>
         <!-- <span style="color:#555;font-size:13px">Ethen Chin Kar Hao Ticketing Services© 2026 </span> -->
       </div>
-      <div style="color:#555;font-size:13px">...</div>
+      <!-- <div style="color:#555;font-size:13px">...</div> -->
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
-      <div style="display:flex;align-items:center;gap:16px">
+    <div class="about-btn" onclick="openAbout()">About Us</div>
+    </div>
+      <!--   <div style="display:flex;align-items:center;gap:16px">
         <a href="https://www.facebook.com/chinethen/posts/pfbid0688Cn3veuqFqBrnZPtnsr9dVmC2qvRJQLAkdH9k4SMJ2H9fS2Ao7yAfLmKCYw74yl?rdid=Mkz2MHLnOCudqoLh#" style="color:#aaa;text-decoration:none">
           <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
@@ -392,8 +441,8 @@ body{background:#0f0f0f;color:#fff}
         <a href="https://wa.me/60166428520" style="color:#555;font-size:13px;text-decoration:none">Contact Us</a>
         <a href="#" style="color:#555;font-size:13px;text-decoration:none">FAQ</a>
         <a href="#" style="color:#555;font-size:13px;text-decoration:none">Terms</a>
-        <a href="#" style="color:#555;font-size:13px;text-decoration:none">Privacy</a>
-      </div>
+        <a href="#" style="color:#555;font-size:13px;text-decoration:none">Privacy</a> -->
+      <!-- </div> -->
     </div>
   </div>
 </footer>
@@ -414,16 +463,163 @@ body{background:#0f0f0f;color:#fff}
   <div>👤<br>Profile</div>
 </div> -->
 
+<!-- ABOUT PAGE OVERLAY -->
+<div id="about-page" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0a0a0a;
+  z-index:3000;
+  overflow-y:auto;
+  flex-direction:column;
+">
+
+  <!-- Header bar -->
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 16px;
+    background:#000;
+    border-bottom:1px solid #222;
+    position:sticky;
+    top:0;
+    z-index:10;
+  ">
+    <button onclick="closeAbout()" style="
+      background:#1c1c1c;
+      border:none;
+      color:#fff;
+      padding:8px 14px;
+      border-radius:20px;
+      font-size:13px;
+      cursor:pointer;
+    ">← Back</button>
+    <span style="font-size:15px;font-weight:bold">About</span>
+  </div>
+
+  <section style="padding:50px 20px;background:#0f0f0f;">
+  <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:30px;">
+
+    <h2 style="font-size:22px;">Legit Check & Community</h2>
+
+    <!-- CARD 1 -->
+    <div style="background:#111;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:15px;">
+
+      <!-- TEXT + LINK -->
+      <div>
+        <div style="font-size:16px;margin-bottom:6px;">
+          脸书诚信帖子 | Facebook Legit Check Post
+        </div>
+        <a href="https://www.facebook.com/share/p/1Axgy161Gw/" target="_blank"
+          style="color:#4cafef;font-size:14px;">
+          View Post →
+        </a>
+      </div>
+
+      <!-- IMAGE -->
+      <img src="fblegit.jpeg"
+        style="width:60%;border-radius:10px;object-fit:cover;">
+    </div>
+
+    <!-- CARD 2 -->
+    <div style="background:#111;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:15px;">
+
+      <div>
+        <div style="font-size:16px;margin-bottom:6px;">
+          小红书诚信帖子 | XHS Legit Check Post
+        </div>
+        <a href="http://xhslink.com/o/AgAtZgW300" target="_blank"
+          style="color:#4cafef;font-size:14px;">
+          View Post →
+        </a>
+      </div>
+
+      <img src="xhslegit.jpeg"
+        style="width:60%;border-radius:10px;">
+    </div>
+
+    <!-- CARD 3 -->
+    <div style="background:#111;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:15px;">
+
+      <div>
+        <div style="font-size:16px;margin-bottom:6px;">
+          Whatsapp 社群 | Whatsapp Community
+        </div>
+        <a href="https://chat.whatsapp.com/Hsm3IsDQV36Jobl4uyADhC" target="_blank"
+          style="color:#4cafef;font-size:14px;">
+          Join Community →
+        </a>
+      </div>
+
+              <div class="two-img">
+  <img src="whatsappleft.jpeg">
+  <img src="whatsappright.jpeg">
+</div>
+
+  </div>
+</section>
+
+  <!-- Content -->
+<div style="padding:30px 20px;max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:50px;">
+
+  <!-- SOCIAL -->
+  <div>
+    <h2 style="font-size:22px;margin-bottom:20px;">Connect With Us</h2>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+
+      <a href="https://www.facebook.com/chinethen" target="_blank"
+        style="flex:1;min-width:200px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;">
+        <div style="font-size:16px;margin-bottom:6px;">📘 Facebook</div>
+        <div style="color:#aaa;font-size:13px;">Ethen Chin Kar Hao</div>
+      </a>
+
+      <a href="https://www.instagram.com/gogoservicesmy" target="_blank"
+        style="flex:1;min-width:200px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;">
+        <div style="font-size:16px;margin-bottom:6px;">📸 Instagram (Business)</div>
+        <div style="color:#aaa;font-size:13px;">@gogoservicesmy</div>
+      </a>
+
+      <a href="https://www.instagram.com/ethenchin_supbro" target="_blank"
+        style="flex:1;min-width:200px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;">
+        <div style="font-size:16px;margin-bottom:6px;">📸 Instagram (Personal)</div>
+        <div style="color:#aaa;font-size:13px;">@ethenchin_supbro</div>
+      </a>
+
+      <a href="https://xhslink.com/m/ABvuAnUze68" target="_blank"
+        style="flex:1;min-width:200px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;">
+        <div style="font-size:16px;margin-bottom:6px;">📕 小红书</div>
+        <div style="color:#aaa;font-size:13px;">豪哥带你看演唱会票务</div>
+      </a>
+
+      <a href="https://m.tb.cn/h.iMehKQE?tk=UE7Q5UTuyCk" target="_blank"
+        style="flex:1;min-width:200px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;">
+        <div style="font-size:16px;margin-bottom:6px;">🟡 闲鱼</div>
+        <div style="color:#aaa;font-size:13px;">豪哥带你看演唱会</div>
+    </a>
+
+    </div>
+  </div>
+
+  <!-- WHATSAPP -->
+  <div>
+    <h2 style="font-size:22px;margin-bottom:20px;">Need Help?</h2>
+
+    <div style="background:#111;padding:25px;border-radius:12px;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:18px;">💬 WhatsApp Support</div>
+      <div style="color:#aaa;">+60 16-642 8520</div>
+
+      <a href="https://wa.me/60166428520" target="_blank"
+        style="margin-top:10px;display:inline-block;background:#25D366;color:#000;padding:12px 20px;border-radius:8px;font-weight:bold;text-decoration:none;width:fit-content;">
+        Chat Now
+      </a>
+    </div>
+  </div>
+
+</div>
+
 <script>
 const sheetData = {
-  all: {
-    label: "All Events",
-    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1158170010&single=true"
-  },
-  cnblue: {
-    label: "CNBLUE",
-    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=703475510&single=true"
-  },
   sammy: {
     label: "郑秀文 Sammi Cheng",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1158170010&single=true"
@@ -532,7 +728,19 @@ setInterval(() => {
   }
 }, 60000);
 
+function openAbout() {
+  const el = document.getElementById('about-page');
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAbout() {
+  const el = document.getElementById('about-page');
+  el.style.display = 'none';
+  document.body.style.overflow = '';
+}
 </script>
+
 
 </body>
 </html>
