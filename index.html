@@ -300,6 +300,16 @@ body{background:#0f0f0f;color:#fff}
       </div>
     </div>
 
+    <div class="card" onclick="openSheet('daniel')">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdHNe4ehyYuFFkWXvWkvXSGjQhQqC8V-ymoCICExr3vrPr7AaGlPtlNQXymVOJ8jQTs4GFATyDxsr4TZ1BlAhQf2ABHfWveXphNkt1rcn4gpqES-0lT9z0bjFHUnKVJpYKl1zN5qOWE4JyunLEdJQjWItP7ZVYgbUEQRyn4H9XsLvtKxFlPmlXQbom0HOs/s2025/DANIEL%20CAESAR%20-%20KL.png">
+      <div class="card-content">
+        <div class="title2"> Daniel Caesar</div>
+        <div class="title3"> Daniel Caesar - Son of Spergy Tour</div>
+        <div class="info">📅 25 May 2026</div>
+        <div class="info">📍 Idea Live Arena, Kuala Lumpur</div>
+      </div>
+    </div>
+
     <div class="card" onclick="openSheet('treasuremy')">
       <img src="https://artist.ygfamily.com/ARTISTS/TREASURE/concert/2025-26_PulseOn/img/tourmain.jpg">
       <div class="card-content">
@@ -369,8 +379,28 @@ body{background:#0f0f0f;color:#fff}
         <div class="info">📍 Singapore Indoor Stadium</div>
       </div>
     </div>
+    
+    <div class="card" onclick="openSheet('nmixx')">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhrArSmCMZnzzlVA1Jq2sMCeNgNWAUm-Ig4toUIPDMFhiFh0Ff314-OHdRiyI5xpL7iPKDiuImRUBgxBoDe8eOJhFMOj-qGLjIdgSGKDPDlds682VrF0wL3V7WOnhotrORKKHUw-G6ImtbAATSNTwF9CxxnLgw3EwjO2NXQ_D71ET4_PqJZzuv_zU6DwCCC/w640-h428/Star%20Theatre_310x207%20(1).jpg">
+      <div class="card-content">
+        <div class="title2"> NMIXX</div>
+        <div class="title3"> NMIXX 1ST WORLD TOUR <EPISODE 1: ZERO FRONTIER> IN SINGAPORE</div>
+        <div class="info">📅 20 June 2026</div>
+        <div class="info">📍 The Star Theatre</div>
+      </div>
+    </div>
 
-    <div class="card" onclick="openSheet('exo')">
+    <div class="card" onclick="openSheet('exomy')">
+      <img src="https://scontent.fkul15-1.fna.fbcdn.net/v/t51.82787-15/662665458_18452221123109963_7180083747487963703_n.jpg?stp=dst-jpg_s640x640_tt6&_nc_cat=107&ccb=1-7&_nc_sid=13d280&_nc_ohc=6EhZaa7YQc4Q7kNvwHi1Fs5&_nc_oc=AdoXpo77HHYPP_voMMuq5AjiDDDmZCPRQt6aIaEp0HNcMyOlWHswR4OP0cGGXpJDEVg&_nc_zt=23&_nc_ht=scontent.fkul15-1.fna&_nc_gid=6Pu1ff0mUD5ccwl3HieL_A&_nc_ss=7a389&oh=00_Af06yLk5HBo9MW5FiH6LtE-52VDyTO-6qAppDVzY3WEbyg&oe=69E38753">
+      <div class="card-content">
+        <div class="title2">EXO</div>
+        <div class="title3">EXO PLANET#6-EXhOrizon in KUALA LUMPUR</div>
+        <div class="info">📅 20 June 2026</div>
+        <div class="info">📍 National Hockey Stadium</div>
+      </div>
+    </div>
+
+    <div class="card" onclick="openSheet('exosg')">
       <img src="https://pbs.twimg.com/media/HFbocGvXIAAahSe?format=jpg&name=small">
       <div class="card-content">
         <div class="title2">EXO</div>
@@ -680,7 +710,7 @@ const sheetData = {
     label: "i-dle 女娃",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=2044995919&single=true"
   },
-  exo: {
+  exosg: {
     label: "EXO",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=33871164&single=true"
   },
@@ -695,6 +725,18 @@ const sheetData = {
   tomorrow: {
     label: "TOMORROWLAND",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1966464514&single=true"
+  },
+  daniel: {
+    label: "Daniel Caesar",
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=2035149464&single=true"
+  },
+  nmixx: {
+    label: "NMIXX",
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1162156115&single=true"
+  },
+  exomy: {
+    label: "EXO",
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=64007859&single=true"
   },
 };
 
