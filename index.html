@@ -127,6 +127,7 @@ body{background:#0f0f0f;color:#fff}
 .badge-MY{background:#1a2e1a;color:#4caf50;}
 .badge-SG{background:#1a1a2e;color:#4c8af5;}
 .badge-TH{background:#2e2a1a;color:#f5c04c;}
+.badge-KR{background:#2e2a1a;color:#d322f7;}
 
 @media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);padding:0 20px;}}
@@ -179,6 +180,7 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
     <div class="cat" onclick="setCountry('MY',this)">Malaysia</div>
     <div class="cat" onclick="setCountry('SG',this)">Singapore</div>
     <div class="cat" onclick="setCountry('TH',this)">Thailand</div>
+    <div class="cat" onclick="setCountry('KR',this)">Korea</div>
   </div>
 </div>
 
@@ -338,6 +340,17 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
         <div class="title3">LISA ASIA TOUR 2026 — LiVE is Smile Always ~15~ KL</div>
         <div class="info">📅 07 June 2026</div>
         <div class="info">📍 TM National Stadium Bukit Jalil, KL</div>
+      </div>
+    </div>
+
+    <div class="card" data-country="KR" data-title="bts world tour arirang in busan asiad main stadium korea  12 june" onclick="openSheet('bts')">
+      <img src="bts.gif">
+      <div class="card-content">
+        <span class="badge badge-KR">KR</span>
+        <div class="title2">BTS</div>
+        <div class="title3">BTS WORLD TOUR 'ARIRANG' IN BUSAN</div>
+        <div class="info">📅 12-13 June 2026</div>
+        <div class="info">📍 Busan Asiad Main Stadium</div>
       </div>
     </div>
 
@@ -583,6 +596,10 @@ const sheetData = {
   asiatop: {
     label: "Asia Top Music Festival Malaysia",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1236745277&single=true"
+  },
+  btw: {
+    label: "BTS - Busan",
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=109392331&single=true"
   },
   test:{label:"test",folder:"1pDNWRAhPlC6tpCq2UpJ0qo6a7PTaz8hY"}
 };
