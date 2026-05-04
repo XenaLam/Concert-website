@@ -128,6 +128,7 @@ body{background:#0f0f0f;color:#fff}
 .badge-SG{background:#1a1a2e;color:#4c8af5;}
 .badge-TH{background:#2e2a1a;color:#f5c04c;}
 .badge-KR{background:#2e2a1a;color:#d322f7;}
+.badge-ID{background:#2e2a1a;color:#e64a4a;}
 
 @media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);padding:0 20px;}}
@@ -181,6 +182,7 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
     <div class="cat" onclick="setCountry('SG',this)">Singapore</div>
     <div class="cat" onclick="setCountry('TH',this)">Thailand</div>
     <div class="cat" onclick="setCountry('KR',this)">Korea</div>
+    <div class="cat" onclick="setCountry('ID',this)">Indonesia</div>
   </div>
 </div>
 
@@ -307,6 +309,17 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
         <div class="title3">G.E.M. 邓紫棋 I AM GLORIA 世界巡回演唱会2.0 吉隆坡站</div>
         <div class="info">📅 06 June 2026</div>
         <div class="info">📍 TM National Stadium Bukit Jalil, KL</div>
+      </div>
+    </div>
+
+    <div class="card" data-country="ID" data-title="daying dior 大颖 2026 kampung girl lotus pond gwk cultural park 6 june" onclick="openSheet('diorbali')">
+      <img src="dior.jpg">
+      <div class="card-content">
+        <span class="badge badge-ID">ID</span> 
+        <div class="title2">Dior 大颖</div>
+        <div class="title3">Dior 大颖 2026 《Kampung Girl》世界巡回演唱会 【Bali 站】</div>
+        <div class="info">📅 06 June 2026</div>
+        <div class="info">📍 Lotus Pond, GWK Cultural Park</div>
       </div>
     </div>
 
@@ -543,8 +556,6 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
 
 <script>
 const sheetData = {
-  treasuresg:{label:"TREASURE 宝石盒 — Singapore",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1792413735&single=true"},
-  apink:{label:"APINK — Kuala Lumpur",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=874010043&single=true"},
   ive:{label:"IVE 芙 — Singapore",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1872894113&single=true"},
   ghostsg:{label:"王琳凯 小鬼 — Singapore",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=346757515&single=true"},
   danielsg:{label:"Daniel Caesar — Singapore",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=346757515&single=true"},
@@ -578,6 +589,14 @@ const sheetData = {
   bts: {
     label: "BTS - Busan",
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=109392331&single=true"
+  },
+  diorbali: {
+    label: "Dior - Bali",
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwhwtuuz2YMdy47PyqWi3uLbGPzOgHdYYrjcNbcK32GUnbP-93zq-DrQD9vORPWkkijY40V6IA-sAs/pubhtml?gid=1051355674&single=true"
+  },
+  a: {
+    label: "a",
+    url: "a"
   },
   test:{label:"test",folder:"1pDNWRAhPlC6tpCq2UpJ0qo6a7PTaz8hY"}
 };
