@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</title>
+<meta property="og:image" content="https://www.jticketing.com/tickets/gem-kl-26">
+
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',Arial,sans-serif;}
+body{background:#0f0f0f;color:#fff}
+
+.header{
+  background:rgba(0,0,0,0.9);
+  position:sticky;
+  top:0;
+  z-index:1000;
+  border-bottom:1px solid #222;
+  backdrop-filter:blur(6px);
+}
+.header-inner{
+  max-width:1500px;
+  margin:0 auto;
+  padding:14px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand-title{font-weight:600;font-size:16px;letter-spacing:0.3px;}
+
+.about-btn{
+  font-size:13px;
+  padding:6px 16px;
+  border-radius:20px;
+  background:#1c1c1c;
+  color:#ccc;
+  cursor:pointer;
+  transition:all 0.2s ease;
+  border:none;
+}
+.about-btn:hover{background:#e63946;color:#fff;}
+
+.filter-section{
+  background:#141414;
+  padding:16px clamp(16px,6vw,140px);
+  border-bottom:1px solid #222;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+#searchInput{
+  padding:11px 18px;
+  border-radius:30px;
+  border:1px solid #1e1e1e;
+  background:#1c1c1c;
+  color:#fff;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  width:100%;
+  transition:border-color 0.2s;
+}
+#searchInput:focus{outline:none;border-color:#444;}
+#searchInput::placeholder{color:#555;}
+
+.country-row{display:flex;gap:10px;overflow-x:auto;}
+.cat{
+  background:#1c1c1c;
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:500;
+  white-space:nowrap;
+  cursor:pointer;
+  border:1px solid #2a2a2a;
+  transition:all 0.2s;
+  user-select:none;
+  color:#ccc;
+}
+.cat:hover{background:#2a2a2a;border-color:#444;}
+.cat.active{background:#e63946;color:#fff;border-color:#e63946;}
+
+.section{padding:28px 40px;}
+.section-heading{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#555;
+  margin-bottom:20px;
+  padding:0 100px;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+  grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+  padding:0 100px;
+}
+
+.card{
+  background:#111;
+  border-radius:10px;
+  overflow:hidden;
+  transition:transform 0.25s ease,border-color 0.25s ease;
+  cursor:pointer;
+  border:1px solid #1c1c1c;
+}
+.card:hover{transform:translateY(-4px);border-color:#333;}
+.card img{width:100%;height:170px;object-fit:cover;display:block;filter:brightness(0.9);transition:filter 0.25s ease;}
+.card:hover img{filter:brightness(1);}
+.card-content{padding:14px 16px;}
+.title2{font-size:14px;font-weight:600;margin-bottom:4px;letter-spacing:0.2px;}
+.title3{font-size:12px;margin-bottom:8px;color:#666;line-height:1.5;}
+.info{font-size:12px;color:#555;margin-bottom:3px;letter-spacing:0.2px;}
+
+/* country badge */
+.badge{
+  display:inline-block;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.8px;
+  padding:3px 8px;
+  border-radius:20px;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+.badge-MY{background:#1a2e1a;color:#4caf50;}
+.badge-SG{background:#1a1a2e;color:#4c8af5;}
+.badge-TH{background:#2e2a1a;color:#f5c04c;}
+.badge-KR{background:#2e2a1a;color:#d322f7;}
+.badge-ID{background:#2e2a1a;color:#e64a4a;}
+.badge-PH{background:#2e2a1a;color:#e8e8e8;}
+
+@media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);padding:0 20px;}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;padding:0 12px;}}
+
+/* SHEET OVERLAY */
+.sheet-page{display:none;position:fixed;inset:0;background:#0f0f0f;z-index:2000;flex-direction:column;}
+.sheet-page.open{display:flex;}
+.sheet-page-header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#000;border-bottom:1px solid #222;position:sticky;top:0;}
+.back-btn{background:#1c1c1c;border:none;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;cursor:pointer;}
+.back-btn:hover{background:#333;}
+.sheet-page iframe{flex:1;width:100%;border:none;background:#1a1a1a;}
+
+/* ABOUT OVERLAY */
+#about-page{
+  position:fixed;
+  inset:0;
+  background:#0a0a0a;
+  z-index:3000;
+  overflow-y:auto;
+  transform:translateX(-100%);
+  transition:transform 0.3s ease;
+}
+#about-page.open{transform:translateX(0);}
+
+.two-img{display:flex;gap:16px;}
+.two-img img{width:50%;height:300px;object-fit:cover;border-radius:10px;}
+
+/* FOOTER */
+footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margin-top:30px;}
+.footer-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-brand{font-size:13px;font-weight:500;color:#555;}
+</style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0CNDXRJ252"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0CNDXRJ252');
+</script>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand-title">Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</div>
+    <div class="about-btn" onclick="openAbout()">About Us</div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-section">
+  <input type="text" id="searchInput" placeholder="Search artist, venue..." oninput="applyFilters()">
+  <div class="country-row">
+    <div class="cat active" onclick="setCountry('all',this)">All</div>
+    <div class="cat" onclick="setCountry('MY',this)">Malaysia</div>
+    <div class="cat" onclick="setCountry('SG',this)">Singapore</div>
+    <div class="cat" onclick="setCountry('TH',this)">Thailand</div>
+    <div class="cat" onclick="setCountry('KR',this)">Korea</div>
+    <div class="cat" onclick="setCountry('ID',this)">Indonesia</div>
+    <div class="cat" onclick="setCountry('PH',this)">Philippines</div>
+  </div>
+</div>
+
+<!-- EVENTS -->
+<div class="section">
+  <div class="section-heading">Events</div>
+  <div class="grid" id="eventsGrid">
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</div>
+    <div class="about-btn" onclick="openAbout()">About Us</div>
+  </div>
+</footer>
+
+<!-- SHEET OVERLAY -->
+<div class="sheet-page" id="sheet-page">
+  <div class="sheet-page-header">
+    <button class="back-btn" onclick="closeSheet()">← Back</button>
+    <span id="sheet-label" style="font-size:15px;font-weight:600;"></span>
+  </div>
+  <!-- Google Sheet iframe -->
+  <iframe id="sheet-frame" src="" style="flex:1;width:100%;border:none;background:#1a1a1a;display:none;"></iframe>
+  <!-- Photo viewer -->
+  <div id="photo-viewer" style="display:none;flex:1;overflow-y:auto;background:#111;padding:20px;flex-direction:column;gap:16px;"></div>
+  <!-- Drive folder embed (used to scrape file IDs without API) -->
+  <iframe id="drive-scraper" style="display:none;"></iframe>
+</div>
+
+<!-- ABOUT PAGE OVERLAY -->
+<div id="about-page">
+
+  <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;background:#000;border-bottom:1px solid #222;position:sticky;top:0;z-index:10;">
+    <button onclick="closeAbout()" class="back-btn">← Back</button>
+    <span style="font-size:15px;font-weight:600;">About Us</span>
+  </div>
+
+  <!-- Legit Check Section -->
+  <section style="padding:40px 20px;background:#0f0f0f;">
+    <div style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:24px;">
+
+      <h2 style="font-size:20px;font-weight:600;">Legit Check &amp; Community</h2>
+
+      <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
+        <div style="font-size:15px;font-weight:500;">脸书诚信帖子 | Facebook Legit Check Post</div>
+        <a href="https://www.facebook.com/share/p/1Axgy161Gw/" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">View Post →</a>
+        <img src="fblegit.jpeg" style="width:60%;border-radius:10px;object-fit:cover;">
+      </div>
+
+      <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
+        <div style="font-size:15px;font-weight:500;">小红书诚信帖子 | XHS Legit Check Post</div>
+        <a href="http://xhslink.com/o/AgAtZgW300" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">View Post →</a>
+        <img src="xhslegit.jpeg" style="width:60%;border-radius:10px;">
+      </div>
+
+      <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
+        <div style="font-size:15px;font-weight:500;">Whatsapp 社群 | Whatsapp Community</div>
+        <a href="https://chat.whatsapp.com/Hsm3IsDQV36Jobl4uyADhC" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">Join Community →</a>
+        <div class="two-img">
+          <img src="whatsappleft.jpeg">
+          <img src="whatsappright.jpeg">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Socials + Contact -->
+  <div style="padding:30px 20px 60px;max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:40px;">
+
+    <div>
+      <h2 style="font-size:20px;font-weight:600;margin-bottom:16px;">Connect With Us</h2>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+
+        <a href="https://www.facebook.com/chinethen" target="_blank" style="flex:1;min-width:180px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid #1c1c1c;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:5px;">📘 Facebook</div>
+          <div style="color:#555;font-size:12px;">Ethen Chin Kar Hao</div>
+        </a>
+
+        <a href="https://www.instagram.com/gogoservicesmy" target="_blank" style="flex:1;min-width:180px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid #1c1c1c;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:5px;">📸 Instagram (Business)</div>
+          <div style="color:#555;font-size:12px;">@gogoservicesmy</div>
+        </a>
+
+        <a href="https://www.instagram.com/ethenchin_supbro" target="_blank" style="flex:1;min-width:180px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid #1c1c1c;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:5px;">📸 Instagram (Personal)</div>
+          <div style="color:#555;font-size:12px;">@ethenchin_supbro</div>
+        </a>
+
+        <a href="https://xhslink.com/m/ABvuAnUze68" target="_blank" style="flex:1;min-width:180px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid #1c1c1c;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:5px;">📕 小红书</div>
+          <div style="color:#555;font-size:12px;">豪哥带你看演唱会票务</div>
+        </a>
+
+        <a href="https://m.tb.cn/h.iMehKQE?tk=UE7Q5UTuyCk" target="_blank" style="flex:1;min-width:180px;background:#111;padding:18px;border-radius:12px;text-decoration:none;color:#fff;border:1px solid #1c1c1c;">
+          <div style="font-size:14px;font-weight:500;margin-bottom:5px;">🟡 闲鱼</div>
+          <div style="color:#555;font-size:12px;">豪哥带你看演唱会</div>
+        </a>
+
+      </div>
+    </div>
+
+    <div>
+      <h2 style="font-size:20px;font-weight:600;margin-bottom:16px;">Need Help?</h2>
+      <div style="background:#111;padding:24px;border-radius:12px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:16px;font-weight:500;">💬 WhatsApp Support</div>
+        <div style="color:#555;font-size:13px;">+60 16-642 8520</div>
+        <a href="https://wa.me/60166428520" target="_blank" style="margin-top:8px;display:inline-block;background:#25D366;color:#000;padding:11px 20px;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;width:fit-content;" onclick="gtag('event', 'whatsapp_click', {
+  event_category: 'contact',
+  event_label: 'main_whatsapp'
+});">Chat Now</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyFuh-_5l0A5XNOKQyepSYQkr8l6d9Ap7fXtEgwnZoghj8KT4GxSWZRv0gZSUDvKLM/exec";
+
+let sheetData={};
+
+const DRIVE_API_KEY = 'AIzaSyChKGiFIRlWRrarAZlbBaLQQJKCWIthN54';
+
+async function loadFolderPhotos(folderId, label) {
+  document.getElementById('sheet-label').textContent = label;
+  document.getElementById('sheet-page').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const frame = document.getElementById('sheet-frame');
+  const viewer = document.getElementById('photo-viewer');
+
+  frame.style.display = 'none';
+
+  // ✅ GRID LAYOUT (MAIN CHANGE)
+  if (window.innerWidth <= 600) {
+  // 📱 MOBILE → FULL WIDTH (NO GRID)
+  viewer.style.display = 'flex';
+  viewer.style.flexDirection = 'column';
+  viewer.style.gap = '16px';
+  viewer.style.padding = '12px 10px';
+} else {
+  // 💻 DESKTOP → GRID
+  viewer.style.display = 'grid';
+  viewer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(500px, 1fr))';
+  viewer.style.gap = '12px';
+  viewer.style.padding = '12px 16px';
+}
+  viewer.style.width = '100%';  
+  viewer.style.maxWidth = 'none';
+
+  viewer.innerHTML = '<div style="color:#555;text-align:center;padding:60px;">⏳ Loading photos...</div>';
+
+  try {
+    const query = encodeURIComponent(
+      `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`
+    );
+
+    const url = `https://www.googleapis.com/drive/v3/files?q=${query}&key=${DRIVE_API_KEY}&fields=files(id,name)&orderBy=createdTime desc&pageSize=50`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.error) {
+      viewer.innerHTML = `<div style="color:#e63946;text-align:center;padding:60px;">
+        Error: ${data.error.message}
+      </div>`;
+      return;
+    }
+
+    const files = data.files;
+
+    if (!files || files.length === 0) {
+      viewer.innerHTML = '<div style="color:#555;text-align:center;padding:60px;">No photos found.</div>';
+      return;
+    }
+
+    viewer.innerHTML = '';
+
+    files.forEach((file, i) => {
+      const wrapper = document.createElement('div');
+
+      // ✅ CARD STYLE
+      wrapper.style.cssText = `
+        width:100%;
+        background:#0a0a0a;
+        border-radius:10px;
+        overflow:hidden;
+        position:relative;
+      `;
+
+      const img = document.createElement('img');
+      img.src = `https://lh3.googleusercontent.com/d/${file.id}`;
+
+      // ✅ IMAGE STYLE (GRID FRIENDLY)
+      img.style.cssText = `
+        width:100%;
+        object-fit:cover;
+        display:block;
+        transition:0.3s;
+        cursor:pointer;
+      `;
+
+      img.loading = 'lazy';
+      img.alt = file.name;
+
+      // 🔥 hover effect (makes it feel premium)
+      img.onmouseover = () => img.style.transform = 'scale(1.05)';
+      img.onmouseout = () => img.style.transform = 'scale(1)';
+
+      // 🔍 click to zoom
+      img.onclick = () => openImageZoom(img.src);
+
+      // ❌ hide broken images
+      img.onerror = () => wrapper.style.display = 'none';
+
+      // 📊 counter badge
+      const num = document.createElement('div');
+      num.style.cssText = `
+        position:absolute;
+        top:10px;
+        right:10px;
+        background:rgba(0,0,0,0.6);
+        color:#fff;
+        font-size:11px;
+        padding:4px 10px;
+        border-radius:20px;
+      `;
+      num.textContent = `${i + 1} / ${files.length}`;
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(num);
+      viewer.appendChild(wrapper);
+    });
+
+  } catch (err) {
+    viewer.innerHTML = `<div style="color:#e63946;text-align:center;padding:60px;">
+      Failed to load photos<br>${err.message}
+    </div>`;
+  }
+}
+function openSheet(key) {
+  gtag('event', 'event_open', {
+  event_category: 'concert',
+  event_label: key
+});
+  const data = sheetData[key];
+  if (!data) return;
+
+  document.getElementById('sheet-label').textContent = data.label;
+  document.getElementById('sheet-page').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const frame = document.getElementById('sheet-frame');
+  const viewer = document.getElementById('photo-viewer');
+
+  if (data.folder) {
+    // FOLDER MODE — auto loads all photos from Drive folder
+    frame.style.display = 'none';
+    loadFolderPhotos(data.folder, data.label);
+
+  } else if (data.photos) {
+    // MANUAL PHOTOS array
+    frame.style.display = 'none';
+    viewer.style.display = 'grid';
+    viewer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(260px, 1fr))';
+    viewer.style.gap = '16px';
+    viewer.style.padding = '20px';
+    viewer.innerHTML = '';
+    data.photos.forEach((url, i) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = `
+      width:100%;
+      background:#0a0a0a;
+      border-radius:10px;
+      overflow:hidden;
+      `;
+      const img = document.createElement('img');
+      img.src = url;
+      img.style.cssText = `
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      `;
+      img.loading = 'lazy';
+      const num = document.createElement('div');
+      num.style.cssText = 'position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px;';
+      num.textContent = `${i + 1} / ${data.photos.length}`;
+      wrapper.appendChild(img);
+      wrapper.appendChild(num);
+      viewer.appendChild(wrapper);
+    });
+
+  } else if (data.url) {
+    // GOOGLE SHEET
+    viewer.style.display = 'none';
+    viewer.innerHTML = '';
+    frame.style.display = 'flex';
+    frame.src = data.url;
+  }
+}
+
+function openImageZoom(src) {
+  const overlay = document.createElement("div");
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.95);
+    display:flex;justify-content:center;align-items:center;
+    z-index:9999;overflow:hidden;touch-action:none;
+  `;
+
+  const closeBtn = document.createElement("div");
+  closeBtn.innerHTML = "✕";
+  closeBtn.style.cssText = `
+    position:absolute;top:12px;right:12px;
+    font-size:20px;color:#fff;cursor:pointer;
+    z-index:10000;
+    background:rgba(255,255,255,0.2);
+    width:52px;height:52px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    border:2px solid rgba(255,255,255,0.3);
+  `;
+
+  // Make touch area even bigger with padding trick
+  closeBtn.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    closeOverlay();
+  }, { passive: false });
+
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeOverlay();
+  });
+
+  const hint = document.createElement("div");
+  hint.innerHTML = "Scroll to zoom · Drag to pan · Double-click to reset";
+  hint.style.cssText = `
+    position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+    font-size:11px;color:#777;white-space:nowrap;pointer-events:none;
+    transition:opacity 1s;z-index:10000;
+  `;
+  setTimeout(() => hint.style.opacity = '0', 2500);
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.style.cssText = `
+    max-width:90vw;max-height:90vh;
+    cursor:grab;user-select:none;-webkit-user-drag:none;
+    transform-origin:center center;
+    display:block;will-change:transform;
+  `;
+
+  let scale = 1, posX = 0, posY = 0;
+  let isDragging = false, lastX, lastY, lastDist = null;
+  let closed = false;
+
+  function clampPos() {
+    if (scale <= 1) { posX = 0; posY = 0; return; }
+    const rect = img.getBoundingClientRect();
+    const maxX = Math.max(0, (rect.width - window.innerWidth) / 2 + 40);
+    const maxY = Math.max(0, (rect.height - window.innerHeight) / 2 + 40);
+    posX = Math.max(-maxX, Math.min(maxX, posX));
+    posY = Math.max(-maxY, Math.min(maxY, posY));
+  }
+
+  function applyTransform(smooth = false) {
+    img.style.transition = smooth ? 'transform 0.25s ease' : 'none';
+    img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+  }
+
+  function closeOverlay() {
+    if (closed) return;
+    closed = true;
+    overlay.remove();
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+  }
+
+  // WHEEL ZOOM
+  overlay.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const factor = e.deltaY > 0 ? 0.92 : 1.08;
+    scale = Math.min(Math.max(1, scale * factor), 6);
+    clampPos();
+    applyTransform();
+  }, { passive: false });
+
+  // MOUSE DRAG
+  img.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    if (scale <= 1) return;
+    isDragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    img.style.cursor = 'grabbing';
+  });
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    posX += e.clientX - lastX;
+    posY += e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    clampPos();
+    applyTransform();
+  }
+
+  function onMouseUp() {
+    isDragging = false;
+    img.style.cursor = scale > 1 ? 'grab' : 'default';
+  }
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+
+  // DOUBLE CLICK RESET
+  img.addEventListener('dblclick', () => {
+    scale = 1; posX = 0; posY = 0;
+    applyTransform(true);
+    img.style.cursor = 'default';
+  });
+
+  // TOUCH PINCH + PAN
+  overlay.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      lastDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    } else if (e.touches.length === 1) {
+      isDragging = true;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+    }
+  }, { passive: false });
+
+  overlay.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (e.touches.length === 2 && lastDist !== null) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      scale = Math.min(Math.max(1, scale * (dist / lastDist)), 6);
+      lastDist = dist;
+      clampPos();
+      applyTransform();
+    } else if (e.touches.length === 1 && isDragging) {
+      posX += e.touches[0].clientX - lastX;
+      posY += e.touches[0].clientY - lastY;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+      clampPos();
+      applyTransform();
+    }
+  }, { passive: false });
+
+  overlay.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) lastDist = null;
+    if (e.touches.length === 0) isDragging = false;
+  });
+
+  // CLOSE — stopPropagation prevents bubbling to overlay click
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeOverlay();
+  });
+
+  // Click dark area to close (but NOT the image)
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeOverlay();
+  });
+
+  // ESC key to close
+  const onKeyDown = (e) => {
+    if (e.key === 'Escape') { closeOverlay(); document.removeEventListener('keydown', onKeyDown); }
+  };
+  document.addEventListener('keydown', onKeyDown);
+
+  overlay.appendChild(closeBtn);
+  overlay.appendChild(hint);
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
+}
+function closeSheet() {
+  document.getElementById('sheet-page').classList.remove('open');
+  document.getElementById('sheet-frame').src = '';
+  document.getElementById('sheet-frame').style.display = 'none';
+  document.getElementById('photo-viewer').style.display = 'none';
+  document.getElementById('photo-viewer').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+function openAbout(){
+  document.getElementById('about-page').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeAbout(){
+  document.getElementById('about-page').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+let currentCountry="all";
+function setCountry(country,el){
+  currentCountry=country;
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+function applyFilters(){
+  const raw = document.getElementById('searchInput').value.toLowerCase().trim();
+  const terms = raw.split(/\s+/).filter(Boolean); // split by spaces
+
+  document.querySelectorAll('.card').forEach(card => {
+    const dataTitle = (card.dataset.title || "").toLowerCase();
+    const cardText = (card.innerText || card.textContent || "").toLowerCase();
+    const combined = dataTitle + " " + cardText;
+    const country = card.dataset.country || "";
+
+    // Every word must match somewhere in the combined text
+    const matchSearch = !raw || terms.every(term => combined.includes(term));
+    const matchCountry = (currentCountry === "all" || country === currentCountry);
+    card.style.display = (matchSearch && matchCountry) ? "block" : "none";
+  });
+}
+
+setInterval(()=>{
+  const sp=document.getElementById("sheet-page");
+  const iframe=document.getElementById("sheet-frame");
+  if(sp.classList.contains("open")&&iframe.src){iframe.src=iframe.src;}
+},180000);
+
+function normalizeCountry(country) {
+  const value = String(country || "").trim();
+  const upper = value.toUpperCase();
+  const countryMap = {
+    MALAYSIA: "MY",
+    SINGAPORE: "SG",
+    THAILAND: "TH",
+    KOREA: "KR",
+    "SOUTH KOREA": "KR",
+    INDONESIA: "ID"
+  };
+
+  return countryMap[upper] || upper;
+}
+
+function openEventSheet(sheet, label) {
+  if (!sheet) return;
+
+  if (sheetData[sheet]) {
+    openSheet(sheet);
+    return;
+  }
+
+  document.getElementById('sheet-label').textContent = label || 'Event Details';
+  document.getElementById('sheet-page').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const frame = document.getElementById('sheet-frame');
+  const viewer = document.getElementById('photo-viewer');
+  viewer.style.display = 'none';
+  viewer.innerHTML = '';
+  frame.style.display = 'flex';
+  frame.src = sheet;
+}
+
+function renderEvent(event) {
+  const country = normalizeCountry(event.country);
+  const title = event.title || "";
+  const description = event.description || "";
+  const date = event.date || "";
+  const venue = event.venue || "";
+  const image = event.image || "";
+  const label = event.label || title;
+  const sheet = event.sheet || "";
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.dataset.country = country;
+  card.dataset.title = [
+    event.id,
+    title,
+    description,
+    country,
+    date,
+    venue,
+    label
+  ].filter(Boolean).join(" ").toLowerCase();
+  card.onclick = () => openEventSheet(sheet, label);
+
+  const img = document.createElement("img");
+  img.src = image;
+  img.alt = title;
+  img.loading = "lazy";
+
+  const content = document.createElement("div");
+  content.className = "card-content";
+
+  const badge = document.createElement("span");
+  badge.className = `badge badge-${country}`;
+  badge.textContent = country;
+
+  const titleEl = document.createElement("div");
+  titleEl.className = "title2";
+  titleEl.textContent = title;
+
+  const descEl = document.createElement("div");
+  descEl.className = "title3";
+  descEl.textContent = description;
+
+  const dateEl = document.createElement("div");
+  dateEl.className = "info";
+  dateEl.textContent = `📅 ${date}`;
+
+  const venueEl = document.createElement("div");
+  venueEl.className = "info";
+  venueEl.textContent = `📍 ${venue}`;
+
+  content.appendChild(badge);
+  content.appendChild(titleEl);
+  content.appendChild(descEl);
+  content.appendChild(dateEl);
+  content.appendChild(venueEl);
+
+  card.appendChild(img);
+  card.appendChild(content);
+
+  return card;
+}
+
+function getEventsFromResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.events)) return data.events;
+  if (Array.isArray(data.data)) return data.data;
+  if (Array.isArray(data.rows)) return data.rows;
+  return [];
+}
+
+function showEventsMessage(message) {
+  const grid = document.getElementById("eventsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+  const state = document.createElement("div");
+  state.style.cssText = "grid-column:1/-1;color:#777;text-align:center;padding:50px 16px;font-size:13px;line-height:1.6;";
+  state.textContent = message;
+  grid.appendChild(state);
+}
+
+function getApiErrorMessage(text) {
+  const html = new DOMParser().parseFromString(text, "text/html");
+  const message = (html.body.textContent || "").replace(/\s+/g, " ").trim();
+  return message || "Event API is not returning JSON. Check your Google Apps Script deployment.";
+}
+
+async function loadEvents(){
+
+const grid=document.getElementById("eventsGrid");
+
+if(!grid)return;
+
+try{
+
+grid.innerHTML=
+'<div style="padding:50px;text-align:center;">Loading...</div>';
+
+console.log("Fetching:",API_URL);
+
+const response = await fetch(API_URL, {
+  method: "GET",
+  mode: "cors",
+  redirect: "follow"
+});
+
+const text = await response.text();
+
+console.log(text);
+
+const data = JSON.parse(text);
+
+grid.innerHTML='';
+
+sheetData={};
+
+data.forEach(event=>{
+
+sheetData[event.id]={
+
+label:event.label,
+url:event.sheet
+
+};
+
+grid.appendChild(
+renderEvent(event)
+);
+
+});
+
+applyFilters();
+
+}catch(err){
+
+console.error("FULL ERROR:",err);
+
+grid.innerHTML=`
+
+<div style="
+padding:50px;
+text-align:center;
+color:red">
+
+${err}
+
+</div>
+
+`;
+
+}
+
+}
+
+loadEvents();
+</script>
+</body>
+</html>
