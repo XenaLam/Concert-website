@@ -134,6 +134,9 @@ body{background:#0f0f0f;color:#fff}
 .badge-PH{background:#2e2a1a;color:#e8e8e8;}
 .badge-FR{background:#2e2a1a;color:#04fad1;}
 .badge-HK{background:#2e2a1a;color:#ff0000;}
+.badge-Rent{background:#2e2a1a;color:#444343;}
+.badge-Currency{background:#2e2a1a;color:#d0f309;}
+.badge-Genting{background:#2e2a1a;color:#00b7ff;}
 
 @media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);padding:0 20px;}}
@@ -200,6 +203,12 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
     <div class="cat" onclick="setCountry('PH',this)">Philippines</div>
     <div class="cat" onclick="setCountry('FR',this)">France</div>
     <div class="cat" onclick="setCountry('HK',this)">Hong Kong</div>
+  </div>
+
+  <div class="country-row">
+    <div class="cat" onclick="setCountry('Rent',this)">Rent Phone</div>
+    <div class="cat" onclick="setCountry('Currency',this)">Currency Exchange</div>
+    <div class="cat" onclick="setCountry('Genting',this)">Genting Concert Tickets</div>
   </div>
 </div>
 
@@ -753,6 +762,10 @@ function normalizeCountry(country) {
     INDONESIA: "ID",
     France: "FR",
     PHILIPPINES: "PH",
+    "Hong Kong": "HK",
+    "Rent Phone": "Rent",
+    "Currency Exchange": "Currency",
+    "Genting Concert Tickets": "Genting",
   };
 
   return countryMap[upper] || upper;
@@ -822,19 +835,23 @@ function renderEvent(event) {
   descEl.className = "title3";
   descEl.textContent = description;
 
-  const dateEl = document.createElement("div");
-  dateEl.className = "info";
-  dateEl.textContent = `📅 ${date}`;
-
-  const venueEl = document.createElement("div");
-  venueEl.className = "info";
-  venueEl.textContent = `📍 ${venue}`;
-
   content.appendChild(badge);
   content.appendChild(titleEl);
   content.appendChild(descEl);
-  content.appendChild(dateEl);
-  content.appendChild(venueEl);
+
+  if (date) {
+    const dateEl = document.createElement("div");
+    dateEl.className = "info";
+    dateEl.textContent = `📅 ${date}`;
+    content.appendChild(dateEl);
+  }
+
+  if (venue) {
+    const venueEl = document.createElement("div");
+    venueEl.className = "info";
+    venueEl.textContent = `📍 ${venue}`;
+    content.appendChild(venueEl);
+  }
 
   card.appendChild(img);
   card.appendChild(content);
