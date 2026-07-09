@@ -137,6 +137,8 @@ body{background:#0f0f0f;color:#fff}
 .badge-Rent{background:#2e2a1a;color:#444343;}
 .badge-Currency{background:#2e2a1a;color:#d0f309;}
 .badge-Genting{background:#2e2a1a;color:#00b7ff;}
+.badge-AU{background:#2e2a1a;color:#5eff00;}
+.badge-US{background:#2e2a1a;color:#2f00ff;}
 
 @media(max-width:1200px){.grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);padding:0 20px;}}
@@ -203,6 +205,9 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
     <div class="cat" onclick="setCountry('PH',this)">Philippines</div>
     <div class="cat" onclick="setCountry('FR',this)">France</div>
     <div class="cat" onclick="setCountry('HK',this)">Hong Kong</div>
+    <div class="cat" onclick="setCountry('AU',this)">Australia</div>
+    <div class="cat" onclick="setCountry('US',this)">United States</div>
+    <
   </div>
 
   <div class="country-row">
@@ -766,6 +771,8 @@ function normalizeCountry(country) {
     "Rent Phone": "Rent",
     "Currency Exchange": "Currency",
     "Genting Concert Tickets": "Genting",
+    AUSTRALIA: "AU",
+    "United States of America": "US"
   };
 
   return countryMap[upper] || upper;
@@ -952,6 +959,34 @@ ${err}
 }
 
 loadEvents();
+
+data.forEach(event => {
+    sheetData[event.id] = {
+        label: event.label,
+        url: event.sheet
+    };
+
+    grid.appendChild(renderEvent(event));
+});
+
+updateFilterButtons();
+applyFilters();
+function updateFilterButtons() {
+    const available = new Set();
+
+    document.querySelectorAll(".card").forEach(card => {
+        available.add(card.dataset.country);
+    });
+
+    document.querySelectorAll(".cat").forEach(btn => {
+        const value = btn.getAttribute("onclick")
+            ?.match(/'([^']+)'/)?.[1];
+
+        if (!value || value === "all") return;
+
+        btn.style.display = available.has(value) ? "" : "none";
+    });
+}
 </script>
 </body>
 </html>
