@@ -339,6 +339,9 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyFuh-_5l0A5XNOKQyepSYQkr8l6d9Ap7fXtEgwnZoghj8KT4GxSWZRv0gZSUDvKLM/exec";
 
+const CARD_IMAGE_FOLDER = "14f7DQ0_NgqwWsWodjsYPQPM2Frsz89YG";
+const imageMap = {};
+
 let sheetData={};
 
 const DRIVE_API_KEY = 'AIzaSyChKGiFIRlWRrarAZlbBaLQQJKCWIthN54';
@@ -567,7 +570,14 @@ function openImageZoom(src) {
   setTimeout(() => hint.style.opacity = '0', 2500);
 
   const img = document.createElement("img");
-  img.src = src;
+  img.alt = title;
+  img.loading = "lazy";
+
+  img.src = "placeholder.jpg"; // optional loading image
+
+  getCardImage(image).then(url => {
+      img.src = url;
+  });
   img.style.cssText = `
     max-width:90vw;max-height:90vh;
     cursor:grab;user-select:none;-webkit-user-drag:none;
@@ -824,10 +834,12 @@ function renderEvent(event) {
   ].filter(Boolean).join(" ").toLowerCase();
   card.onclick = () => openEventSheet(sheet, label);
 
-  const img = document.createElement("img");
-  img.src = image;
+ const img = document.createElement("img");
   img.alt = title;
   img.loading = "lazy";
+
+  const key = (image || "").trim().toLowerCase();
+img.src = imageMap[key] || "placeholder.jpg";
 
   const content = document.createElement("div");
   content.className = "card-content";
@@ -894,6 +906,7 @@ function getApiErrorMessage(text) {
 }
 
 async function loadEvents(){
+  await loadCardImages(); 
 
 const grid=document.getElementById("eventsGrid");
 
@@ -962,17 +975,6 @@ ${err}
 
 loadEvents();
 
-data.forEach(event => {
-    sheetData[event.id] = {
-        label: event.label,
-        url: event.sheet
-    };
-
-    grid.appendChild(renderEvent(event));
-});
-
-updateFilterButtons();
-applyFilters();
 function updateFilterButtons() {
     const available = new Set();
 
@@ -989,6 +991,56 @@ function updateFilterButtons() {
         btn.style.display = available.has(value) ? "" : "none";
     });
 }
+async function getCardImage(filename) {
+  try {
+    const query = encodeURIComponent(
+      `'${CARD_IMAGE_FOLDER}' in parents and name='${filename}' and trashed=false`
+    );
+
+    const url =
+      `https://www.googleapis.com/drive/v3/files` +
+      `?q=${query}` +
+      `&key=${DRIVE_API_KEY}` +
+      `&fields=files(id)` +
+      `&pageSize=1`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.files && data.files.length > 0) {
+      return `https://lh3.googleusercontent.com/d/${data.files[0].id}`;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  return "placeholder.jpg";
+}
+async function loadCardImages() {
+
+    const query = encodeURIComponent(
+        `'${CARD_IMAGE_FOLDER}' in parents and mimeType contains 'image/' and trashed=false`
+    );
+
+    const url =
+        `https://www.googleapis.com/drive/v3/files?q=${query}` +
+        `&key=${DRIVE_API_KEY}` +
+        `&fields=files(id,name)` +
+        `&pageSize=1000`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    console.log(data);
+
+    data.files.forEach(file => {
+        imageMap[file.name.toLowerCase()] =
+            `https://lh3.googleusercontent.com/d/${file.id}`;
+    });
+
+    console.log(imageMap);
+}
+
 </script>
 </body>
 </html>
