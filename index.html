@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://www.googleapis.com">
+<link rel="preconnect" href="https://lh3.googleusercontent.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Ethen Chin Kar Hao Ticketing Service | 豪哥带你看演唱会票务</title>
 <meta property="og:image" content="https://www.jticketing.com/tickets/gem-kl-26">
@@ -106,9 +111,11 @@ body{background:#0f0f0f;color:#fff}
   transition:transform 0.25s ease,border-color 0.25s ease;
   cursor:pointer;
   border:1px solid #1c1c1c;
+  content-visibility:auto;
+  contain-intrinsic-size:auto 320px;
 }
 .card:hover{transform:translateY(-4px);border-color:#333;}
-.card img{width:100%;height:170px;object-fit:cover;display:block;filter:brightness(0.9);transition:filter 0.25s ease;}
+.card img{width:100%;height:170px;object-fit:cover;display:block;background:#1c1c1c;filter:brightness(0.9);transition:filter 0.25s ease;}
 .card:hover img{filter:brightness(1);}
 .card-content{padding:14px 16px;}
 .title2{font-size:14px;font-weight:600;margin-bottom:4px;letter-spacing:0.2px;}
@@ -266,21 +273,21 @@ footer{background:#000;padding:24px 40px 40px;border-top:1px solid #1a1a1a;margi
       <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
         <div style="font-size:15px;font-weight:500;">脸书诚信帖子 | Facebook Legit Check Post</div>
         <a href="https://www.facebook.com/share/p/1Axgy161Gw/" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">View Post →</a>
-        <img src="fblegit.jpeg" style="width:60%;border-radius:10px;object-fit:cover;">
+        <img src="fblegit.jpeg" loading="lazy" decoding="async" style="width:60%;border-radius:10px;object-fit:cover;">
       </div>
 
       <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
         <div style="font-size:15px;font-weight:500;">小红书诚信帖子 | XHS Legit Check Post</div>
         <a href="http://xhslink.com/o/AgAtZgW300" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">View Post →</a>
-        <img src="xhslegit.jpeg" style="width:60%;border-radius:10px;">
+        <img src="xhslegit.jpeg" loading="lazy" decoding="async" style="width:60%;border-radius:10px;">
       </div>
 
       <div style="background:#111;border-radius:12px;padding:24px;border:1px solid #1c1c1c;display:flex;flex-direction:column;gap:14px;">
         <div style="font-size:15px;font-weight:500;">Whatsapp 社群 | Whatsapp Community</div>
         <a href="https://chat.whatsapp.com/Hsm3IsDQV36Jobl4uyADhC" target="_blank" style="color:#4cafef;font-size:13px;text-decoration:none;">Join Community →</a>
         <div class="two-img">
-          <img src="whatsappleft.jpeg">
-          <img src="whatsappright.jpeg">
+          <img src="whatsappleft.jpeg" loading="lazy" decoding="async">
+          <img src="whatsappright.jpeg" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -572,14 +579,8 @@ function openImageZoom(src) {
   setTimeout(() => hint.style.opacity = '0', 2500);
 
   const img = document.createElement("img");
-  img.alt = title;
-  img.loading = "lazy";
-
-  img.src = "placeholder.jpg"; // optional loading image
-
-  getCardImage(image).then(url => {
-      img.src = url;
-  });
+  img.alt = "Enlarged event image";
+  img.src = src;
   img.style.cssText = `
     max-width:90vw;max-height:90vh;
     cursor:grab;user-select:none;-webkit-user-drag:none;
@@ -840,9 +841,11 @@ function renderEvent(event) {
  const img = document.createElement("img");
   img.alt = title;
   img.loading = "lazy";
+  img.decoding = "async";
 
   const key = (image || "").trim().toLowerCase();
-img.src = imageMap[key] || "placeholder.jpg";
+  img.dataset.imageKey = key;
+  if (imageMap[key]) img.src = imageMap[key];
 
   const content = document.createElement("div");
   content.className = "card-content";
@@ -891,7 +894,11 @@ function getEventsFromResponse(data) {
   return [];
 }
 
-function showEventsMessage(message) {
+const EVENTS_CACHE_KEY = "ticketing-events-v1";
+const EVENTS_CACHE_TTL = 10 * 60 * 1000;
+const EVENTS_REQUEST_TIMEOUT = 12 * 1000;
+
+function showEventsMessage(message, onRetry) {
   const grid = document.getElementById("eventsGrid");
   if (!grid) return;
 
@@ -900,79 +907,109 @@ function showEventsMessage(message) {
   state.style.cssText = "grid-column:1/-1;color:#777;text-align:center;padding:50px 16px;font-size:13px;line-height:1.6;";
   state.textContent = message;
   grid.appendChild(state);
+
+  if (onRetry) {
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "back-btn";
+    retry.textContent = "Retry";
+    retry.addEventListener("click", onRetry);
+    state.appendChild(document.createElement("br"));
+    state.appendChild(retry);
+  }
 }
 
-function getApiErrorMessage(text) {
-  const html = new DOMParser().parseFromString(text, "text/html");
-  const message = (html.body.textContent || "").replace(/\s+/g, " ").trim();
-  return message || "Event API is not returning JSON. Check your Google Apps Script deployment.";
+function getCachedEvents() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(EVENTS_CACHE_KEY));
+    if (cached && Date.now() - cached.savedAt < EVENTS_CACHE_TTL && Array.isArray(cached.events)) {
+      return cached.events;
+    }
+  } catch (error) {
+    console.warn("Event cache could not be read.", error);
+  }
+  return null;
+}
+
+function cacheEvents(events) {
+  try {
+    localStorage.setItem(EVENTS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), events }));
+  } catch (error) {
+    console.warn("Event cache could not be saved.", error);
+  }
+}
+
+function renderEvents(events) {
+  const grid = document.getElementById("eventsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+  sheetData = {};
+
+  if (!events.length) {
+    showEventsMessage("No events are available right now.");
+    return;
+  }
+
+  const cards = document.createDocumentFragment();
+  events.forEach(event => {
+    sheetData[event.id] = {
+      label: event.label,
+      url: event.sheet
+    };
+    cards.appendChild(renderEvent(event));
+  });
+
+  grid.appendChild(cards);
+  applyFilters();
 }
 
 async function loadEvents(){
-  await loadCardImages(); 
+  const cardImagesPromise = loadCardImages().catch(error => {
+    console.warn("Card image map could not be loaded.", error);
+  });
 
-const grid=document.getElementById("eventsGrid");
+  const cachedEvents = getCachedEvents();
+  if (cachedEvents) {
+    renderEvents(cachedEvents);
+  } else {
+    showEventsMessage("Loading events...");
+  }
 
-if(!grid)return;
+  cardImagesPromise.then(updateCardImages);
 
-try{
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), EVENTS_REQUEST_TIMEOUT);
 
-grid.innerHTML=
-'<div style="padding:50px;text-align:center;">Loading...</div>';
-
-console.log("Fetching:",API_URL);
+  try {
 
 const response = await fetch(API_URL, {
   method: "GET",
   mode: "cors",
-  redirect: "follow"
+  redirect: "follow",
+  signal: controller.signal
 });
 
-const text = await response.text();
+if (!response.ok) throw new Error(`Event API returned ${response.status}.`);
 
-console.log(text);
+const data = await response.json();
+const events = getEventsFromResponse(data);
+cacheEvents(events);
 
-const data = JSON.parse(text);
+renderEvents(events);
+updateCardImages();
 
-grid.innerHTML='';
-
-sheetData={};
-
-data.forEach(event=>{
-
-sheetData[event.id]={
-
-label:event.label,
-url:event.sheet
-
-};
-
-grid.appendChild(
-renderEvent(event)
-);
-
-});
-
-applyFilters();
-
-}catch(err){
-
-console.error("FULL ERROR:",err);
-
-grid.innerHTML=`
-
-<div style="
-padding:50px;
-text-align:center;
-color:red">
-
-${err}
-
-</div>
-
-`;
-
-}
+  } catch (error) {
+    console.error("Event API failed.", error);
+    if (!cachedEvents) {
+      const message = error.name === "AbortError"
+        ? "Events are taking too long to respond."
+        : "Events could not be loaded. Check your connection and try again.";
+      showEventsMessage(message, loadEvents);
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
 
 }
 
@@ -994,31 +1031,17 @@ function updateFilterButtons() {
         btn.style.display = available.has(value) ? "" : "none";
     });
 }
-async function getCardImage(filename) {
-  try {
-    const query = encodeURIComponent(
-      `'${CARD_IMAGE_FOLDER}' in parents and name='${filename}' and trashed=false`
-    );
-
-    const url =
-      `https://www.googleapis.com/drive/v3/files` +
-      `?q=${query}` +
-      `&key=${DRIVE_API_KEY}` +
-      `&fields=files(id)` +
-      `&pageSize=1`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data.files && data.files.length > 0) {
-      return `https://lh3.googleusercontent.com/d/${data.files[0].id}`;
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  return "placeholder.jpg";
+function getCardImageUrl(id) {
+  return `https://lh3.googleusercontent.com/d/${id}=w900`;
 }
+
+function updateCardImages() {
+  document.querySelectorAll("img[data-image-key]").forEach(img => {
+    const src = imageMap[img.dataset.imageKey];
+    if (src && !img.getAttribute("src")) img.src = src;
+  });
+}
+
 async function loadCardImages() {
 
     const query = encodeURIComponent(
@@ -1033,15 +1056,12 @@ async function loadCardImages() {
 
     const res = await fetch(url);
     const data = await res.json();
+    const files = Array.isArray(data.files) ? data.files : [];
 
-    console.log(data);
-
-    data.files.forEach(file => {
+    files.forEach(file => {
         imageMap[file.name.toLowerCase()] =
-            `https://lh3.googleusercontent.com/d/${file.id}`;
+            getCardImageUrl(file.id);
     });
-
-    console.log(imageMap);
 }
 
 </script>
